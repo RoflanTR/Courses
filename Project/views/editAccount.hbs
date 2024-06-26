@@ -1,0 +1,36 @@
+<main>
+    <div class="conteiner">
+        <div class="banner__account">
+            <img src="/assets/img/Group 59.svg" alt="hello">
+            <p class="title title__banner__account">Изменение данных</p>
+        </div>
+        {{#if errorEditData}}
+                <p class="notification error">{{errorEditData}}</p>
+                {{/if}}
+        <div class="form-block__editAccount">
+            <div class="back__form__reg_edit-account">
+                <a href="/account"><img src="/assets/icons/Arrow 1.svg" alt="back"></a>
+            </div>
+            <form action="/account/editAccount" class="form__reg form__reg_edit-account" method="post">
+                <div>
+                    <label for="name">Имя:</label>
+                    <input id="name" type="text" name="name" minlength="3" maxlength="20" value="{{dataAccount.dataValues.name}}" required>
+                </div>
+
+                <div>
+                    <label for="lastname">Фамилия:</label>
+                    <input id="lastname" type="text" name="lastname" minlength="3" maxlength="20" value="{{dataAccount.dataValues.last_name}}" required>
+                </div>
+
+                <div>
+                    <label for="email">email:</label>
+                    <input id="email" type="email" name="email" value="{{dataAccount.dataValues.email}}" required>
+                </div>
+
+                <input type="hidden" name="_csrf" value="{{csurf}}">
+
+                <button id="btn_edit" class="btn btn_auth"> Изменить данные</button>
+            </form>
+        </div>
+    </div>
+</main>

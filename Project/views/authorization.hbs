@@ -1,0 +1,68 @@
+<div class="pop_up_auth_open">
+    <div class="pop_up open">
+        <div class="pop_up_conteiner">
+            {{#if mode}}
+            <div class="pop_up_auth pop_up_auth_height pop_up_body">
+                <div class="logo logo__pop_up">
+                    <a href="/">
+                        <img src="/assets/img/LOGO-Black.svg" alt="logo">
+                    </a>
+                </div>
+                {{#if errorRegistration}}
+                <p class="notification error">{{errorRegistration}}</p>
+                {{/if}}
+                <form action="/auth/registration" class="form__reg" method="post">
+                    <p class="title__menu">Регистрация</p>
+                    <input id="rname" type="text" name="name" placeholder="Имя" minlength="3" maxlength="20" required>
+                    <input id="rlastname" type="text" name="lastname" placeholder="Фамилия" minlength="3" maxlength="20"
+                        required>
+                    <input id="rlogin" type="text" name="login" placeholder="Логин (Латинские буквы и цифры)"
+                        minlength="6" maxlength="20" required>
+                    <input id="rpassword" type="password" name="password" placeholder="Пароль" minlength="6"
+                        maxlength="20" required>
+                    <input id="remail" type="email" name="email" placeholder="Почта" minlength="6" maxlength="60" required>
+                    <input id="rphone" type="tel" name="phone" placeholder="Номер телефона (начиная с 8)" minlength="11"
+                        maxlength="11" required>
+
+                    <input type="hidden" name="_csrf" value="{{csurf}}">
+
+                    <button id="btn_reg" class="btn btn_auth"> Зарегистрироваться</button>
+                    <a href="/auth/login">
+                        <p class="transition transition-auth">Уже есть аккаунт?</p>
+                    </a>
+                </form>
+
+                {{else}}
+                <div class="pop_up_auth pop_up_body">
+                    <div class="logo logo__pop_up">
+                        <a href="/">
+                            <img src="/assets/img/LOGO-Black.svg" alt="logo">
+                        </a>
+                    </div>
+                    <div>
+                        {{#if errorLogin}}
+                        <p class="notification error">{{errorLogin}}</p>
+                        {{/if}}
+                        {{#if successfully}}
+                        <p class="notification successfully">{{successfully}}</p>
+                        {{/if}}
+                        <form action="/auth/login" class="form__auth" method="post">
+                            <p class="title__menu">Вход</p>
+                            <input id="alogin" type="text" name="login" placeholder="Логин" required>
+                            <input id="apassword" type="password" name="password" placeholder="Пароль" required>
+
+                            <input type="hidden" name="_csrf" value="{{csurf}}">
+
+                            <button id="btn_log" class="btn btn_auth"> Войти</button>
+                            <a href="/auth/reg">
+                                <p class="transition transition-login">Нет аккаунта?</p>
+                            </a>
+                        </form>
+
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

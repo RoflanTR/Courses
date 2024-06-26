@@ -1,0 +1,71 @@
+<main>
+    <div class="banner">
+        <div class="image__baner">
+            <img src="/assets/img/banner.svg" alt="logo">
+        </div>
+        <div class="text__baner">
+            <div class="text__baner_position">
+                <h3 class="title__baner">Начните <span class="selected">обучаться</span><br> уже <span
+                        class="selected">сейчас</span></h3>
+                <p class="description">Освойте новые профессии или углубите знания в своей области с нашими курсами.
+                    Экспертные преподаватели, <span class="selected selected__text">широкий выбор тем</span>,
+                    актуальные знания и сертификаты. Присоединяйтесь к нам и <span
+                        class="selected selected__text">начните свой путь к успеху</span> уже сегодня!</p>
+            </div>
+        </div>
+    </div>
+    <div class="conteiner">
+        <h3 class="title title__menu title__menu_slider">Популярные курсы.</h3>
+        <section class="slider">
+            {{#each popularCourses}}
+            <article class="slide">
+                <div class="card card__slider">
+                    <a href="/card/{{Course.id}}">
+                        <div class="image__card">
+                            <img src="/assets/imgCourses/{{Course.img}}" alt="course">
+                        </div>
+                        <div class="description-card description-card__slider">
+                            <div class="score">
+                                <div class="info__score">
+                                    <div class="item__score">
+                                        <img src="/assets/icons/play.svg" alt="play">
+                                        <p> {{Course.count_lesson}} лекций</p>
+                                    </div>
+                                    <div class="item__score">
+                                        <img src="/assets/icons/clock.svg" alt="clock">
+                                        <p>{{Course.time}} часов</p>
+                                    </div>
+                                </div>
+                                {{#if Course.count_review}}
+                                <div class="estimation">
+                                    <div class="item__score stars">
+                                        <img src="/assets/icons/Star 1.svg" alt="star">
+                                        <p>{{Course.average_score}}</p>
+                                    </div>                                    
+                                    <div class="reviews">
+                                        <p>Отзывов: {{Course.count_review}}</p>
+                                    </div>
+                                </div>
+                                {{/if}}
+                            </div>
+                            <div class="title title__card_slider">
+                                {{Course.name}}
+                            </div>
+                            <div class="author">
+                                {{Course.School.name}}
+                            </div>
+                            <div class="short-description">
+                                {{Course.description}}
+                            </div>
+                            <div class="price">
+                                <p>{{Course.price}} ₽</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </article>
+            {{/each}}
+        </section>
+    </div>
+
+</main>

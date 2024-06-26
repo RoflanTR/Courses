@@ -1,0 +1,57 @@
+<header class="header">
+    <div class="logo logo__header">
+        <a href="/" class="link__logo"><img src="/assets/img/LOGO-Black.svg" alt="logo"></a>
+    </div>
+    <nav class="menu">
+        {{#if isHome}}<a href="/">
+            <p class="menu_p menu_p_active">Главная</p>
+        </a>
+        {{else}}
+        <a href="/">
+            <p class="menu_p">Главная</p>
+        </a>
+        {{/if}}
+        {{#if isCatalog}} <a href="/catalog">
+            <p class="menu_p menu_p_active">Курсы</p>
+        </a>
+        {{else}}
+        <a href="/catalog">
+            <p class="menu_p">Курсы</p>
+        </a>
+        {{/if}}
+
+        {{#if isFaq}} <a href="/FAQ">
+            <p class="menu_p menu_p_active">FAQ</p>
+        </a>
+        {{else}}
+        <a href="/FAQ">
+            <p class="menu_p">FAQ</p>
+        </a>
+        {{/if}}
+        {{#if isAdmin}}
+        {{#if adminPanel}}
+        <a href="/admin">
+            <p class="menu_p menu_p_active">Админка</p>
+        </a>
+        {{else}}
+        <a href="/admin">
+            <p class="menu_p">Админка</p>
+        </a>
+        {{/if}}
+        {{/if}}
+
+    </nav>
+    {{#if isAuth}}
+    <div class="account">
+        <a href="/account"><img src="/assets/icons/account.svg" alt="account"></a>
+            <a href="/logout"><img src="/assets/icons/logout.svg" alt="logout"></a>
+    </div>
+    {{else}}
+    <div class="account">
+            <a href="/login"><p>Войти</p></a>
+    </div>
+    
+            
+    
+    {{/if}}
+</header>

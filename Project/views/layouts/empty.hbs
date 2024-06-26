@@ -1,0 +1,15 @@
+{{> head}}
+
+<body>
+
+    <div class="wrraper">
+        {{{body}}}
+    </div>
+    {{#if mode}}
+    <script src="/scriptReg.js"></script>
+    {{else}}
+    <script src="/scriptLogin.js"></script>
+    {{/if}}
+</body>
+
+</html>

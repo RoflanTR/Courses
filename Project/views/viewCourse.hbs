@@ -1,0 +1,103 @@
+{{#if isError}}
+<main style="display: flex;">
+    <div class="error-block">
+        <h3>Произошла ошибка</h3>
+        <a href="/account" class="link__error">Вернуться назад</a>
+
+    </div>
+</main>
+{{else}}
+<main>
+    <div class="conteiner conteiner__view-course">
+        {{#if listLesson}}
+        <div class="content-course_horizontal">
+            {{#each listLesson}}
+            <div class="item__content-course">
+                <button id="{{dataValues.number_lesson}}" class="open-video btn__view-course" type="submit"
+                        data-csurf="{{@root.csurf}}">
+                        <div class="title title__item">Урок {{dataValues.number_lesson}}</div>
+                        <div class="name__item">{{dataValues.name_lesson}}</div>
+                    </button>
+            </div>
+            {{/each}}
+        </div>
+        {{/if}}
+        {{#if successAddReview}}
+        <p class="notification notification_width successfully">{{successAddReview}}</p>
+        {{/if}}
+        <div class="view-course">
+            {{#if listLesson}}
+            <aside class="content-course">
+                {{#each listLesson}}
+                <div class="item__content-course">
+                    <button id="{{dataValues.number_lesson}}" class="open-video btn__view-course" type="submit"
+                        data-csurf="{{@root.csurf}}">
+                        <div class="title title__item">Урок {{dataValues.number_lesson}}</div>
+                        <div class="name__item">{{dataValues.name_lesson}}</div>
+                    </button>
+                    <hr class="line line__item">
+                </div>
+                {{/each}}
+            </aside>
+            {{/if}}
+            <div class="block__video">
+                <div class="content__block__video">
+                    {{#if linkVideo}}
+                    <h3 class="title title__video">{{linkVideo.dataValues.name_lesson}}</h3>
+                    <div class="video">
+                        <video src="/assets/video/{{linkVideo.dataValues.link_video}}" controls></video>
+                    </div>
+                    {{else}}
+                    <h3 class="title title__video">{{linkVideoStart.dataValues.name_lesson}}</h3>
+                    <div class="video">
+                        <video src="/assets/video/{{linkVideoStart.dataValues.link_video}}" controls></video>
+                    </div>
+                    {{/if}}
+                </div>
+                <div class="additional">
+                    <a href="{{linkChat.dataValues.link_tg}}" target="_blank">
+                        <div class="tg-channel">
+                            <img src="/assets/icons/tg.svg" alt="telegram">
+                            <p>Перейти в чат курса</p>
+                        </div>
+                    </a>
+                    {{#if isReview}}
+                    <a href="/card/{{linkVideoStart.dataValues.id_course}}#reviews"
+                        class="link-review__additional_look">
+                        <div class="review__additional review__additional_look">Посмотреть отзывы</div>
+                    </a>
+                    {{else}}
+                    <div class="review__additional review__additional_create">Оставить отзыв</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pop_up_review">
+        <div class="pop_up">
+            <div class="pop_up_conteiner">
+                <div class="pop_up_body pop_up_review">
+                    <div class="close-popup close-popup__review">
+                        <img src="/assets/icons/cross.svg" alt="close">
+                    </div>
+                    <form class="form__pop_up" method="post" action="/viewCourse/review">
+                        <textarea name="review" cols="30" rows="10" placeholder="Напишите отзыв" required></textarea>
+                        <div class="footer__pop_up">
+                            <select name="estimation" id="estimation" required>
+                                <option value="">-- Выберите оценку --</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                            <input type="hidden" name="_csrf" value="{{csurf}}">
+                            <button class="btn btn__form" type="submit">Отправить</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{{/if}}

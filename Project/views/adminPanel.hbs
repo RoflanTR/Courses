@@ -1,0 +1,412 @@
+<main>
+    <div class="conteiner">
+        <div class="menu__admin">
+            {{#if isListCourses}}
+            <p class="select-item__menu__admin">Список курсов</p>
+            {{else}}
+            <a href="/admin">
+                <p>Список курсов</p>
+            </a>
+            {{/if}}
+            {{#if isAdd}}
+            <p class="select-item__menu__admin">Добавление курса</p>
+            {{else}}
+            {{#if isEdit}}
+
+            <a href="/admin/edit">
+                <p class="select-item__menu__admin">Изменение курса</p>
+            </a>
+            {{else}}
+            <a href="/admin/add">
+                <p>Добавить курс</p>
+            </a>
+            {{/if}}
+            {{/if}}
+
+            {{#if isReport}}
+            <p class="select-item__menu__admin">Отчет</p>
+            {{else}}
+            <a href="/admin/report">
+                <p>Отчет</p>
+            </a>
+            {{/if}}
+        </div>
+
+        {{#if isListCourses}}
+        <div class="filters__admin">
+            <p id="additional-flilters" class="additional-flilters__admin">Фильтры</p>
+            <form class="additional-form list-course__form" method="post">
+                <select name="school" id="school">
+                    <option value="">По выбранной школе</option>
+                    {{#each listNameSchool}}
+                    <option value="{{dataValues.name}}">{{dataValues.name}}</option>
+                    {{/each}}
+                </select>
+                <select name="category" id="category">
+                    <option value="all">По категории</option>
+                    {{#each masCategory}}
+                    <option value="{{dataValues.name_category}}">{{dataValues.name_category}}</option>
+                    {{/each}}
+                </select>
+                <div class="search__filters">
+                    <input type="text" id="searchInput" oninput="showHints(this)" name="course_name"
+                        placeholder="Поиск по названию..." data-filters="{{listNameCourses}}" autocomplete="off">
+                    <div id="hintBox"></div>
+                </div>
+                <input type="hidden" name="_csrf" value="{{csurf}}">
+                <button class="btn  btn_filters btn_filters_list-course " type="submit">Применить фильтр</button>
+            </form>
+        </div>
+        {{#if successDeleteCourse}}
+        <p class="notification notification_width successfully">{{successDeleteCourse}}</p>
+        {{/if}}
+        {{#if errorDeleteCourse}}
+        <p class="notification notification_width error">{{errorDeleteCourse}}</p>
+        {{/if}}
+        {{#if successEditCourse}}
+        <p class="notification notification_width successfully">{{successEditCourse}}</p>
+        {{/if}}
+        {{#if errorEditCourse}}
+        <p class="notification notification_width error">{{errorEditCourse}}</p>
+        {{/if}}
+        <div class="nofind"></div>
+        <div class="course-list course-list_admin">
+            {{#each masAllCourses}}
+            <div class="card card__catalog">
+                <a href="/card/{{dataValues.id}}" target="_blank">
+                    <div class="image__card">
+                        <img src="/assets/imgCourses/{{dataValues.img}}" alt="course">
+                    </div>
+                    <div class="description-card">
+                        <div class="score">
+                            <div class="info__score">
+                                <div class="item__score">
+                                    <img src="/assets/icons/play.svg" alt="play">
+                                    <p> {{dataValues.count_lesson}} лекций</p>
+                                </div>
+                                <div class="item__score">
+                                    <img src="/assets/icons/clock.svg" alt="clock">
+                                    <p>{{dataValues.time}} часов</p>
+                                </div>
+                            </div>
+                            {{#if dataValues.average_score}}
+                            <div class="estimation">
+                                <div class="item__score">
+                                    <img src="/assets/icons/Star 1.svg" alt="star">
+                                    <p>{{dataValues.average_score}}</p>
+                                </div>
+                            </div>
+                            {{/if}}
+                        </div>
+                        <div class="description__admin">
+                            <div class="title title__card_slider">
+                                {{dataValues.name}}
+                            </div>
+                            <div class="author">
+                                {{dataValues.School.dataValues.name}}
+                            </div>
+                            <div class="short-description">
+                                {{dataValues.description}}
+                            </div>
+                        </div>
+
+                </a>
+                <div class="price">
+                    <div class="edit-review edit-review__admin">
+                        <form class="form__edit-course" action="/admin/edit" method="post">
+                            <input type="hidden" name="id" value="{{dataValues.id}}">
+                            <input type="hidden" name="_csrf" value="{{@root.csurf}}">
+                            <button class="btn_edit-review btn_edit__admin" type="submit">
+                                Изменить
+                            </button>
+                        </form>
+                        <button class="btn_edit-review btn_delete__admin" data-id="{{dataValues.id}}">Удалить</button>
+                    </div>
+                    <p>{{dataValues.price}} ₽</p>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+        {{/if}}
+        {{#if isAdd}}
+        {{#if errorAddCourse}}
+        <p class="notification error error_admin">{{errorAddCourse}}</p>
+        {{/if}}
+        <form class="form__admin form__admin_add" method="post" action="/admin/add?_csrf={{csurf}}"
+            enctype="multipart/form-data">
+            <div class="block__form__admin">
+                <p class="title title__form__admin">Информация по курсу</p>
+                <label for="name">Название курса</label>
+                <input id="name" type="text" name="name" minlength="3" maxlength="50" required>
+                <div class="select-school">
+                    <label for="school">Выберите школу</label>
+                    <select name="school" id="school" required>
+                        <option value=""></option>
+                        {{#each listNameSchool}}
+                        <option value="{{dataValues.name}}">{{dataValues.name}}</option>
+                        {{/each}}
+                    </select>
+                    <p class="additional-button no-school">Нет такой школы</p>
+                </div>
+                <label for="description">Описание курса</label>
+                <input id="description" type="text" name="description" minlength="3" maxlength="1000" required>
+                <label for="time">Общее время лекций</label>
+                <input id="time" type="text" name="time" minlength="1" maxlength="3" required>
+                <label for="count_lesson">Кол-во лекций</label>
+                <input id="count_lesson" type="text" name="count_lesson" minlength="1" maxlength="3" required>
+                <label for="price">Цена курса</label>
+                <input id="price" type="text" name="price" minlength="1" maxlength="5" required>
+                <div class="select-category">
+                    <label for="category">Выберите категорию</label>
+                    <select name="category" id="category" required>
+                        <option value=""></option>
+                        {{#each masCategory}}
+                        <option value="{{dataValues.name_category}}">{{dataValues.name_category}}</option>
+                        {{/each}}
+                    </select>
+                    <p class="additional-button no-category">Нет такой категории</p>
+                </div>
+                <div class="block-program_course">
+                    <label for="program_course">Программа курса</label>
+                    <div class="item__block-program_course">
+                        <div class="item__program-step">
+                            <div class="input__program-step">
+                                <input id="program_course" type="text" name="program_course" minlength="3"
+                                    maxlength="100" required>
+                                <img class="remove__program-step" src="/assets/icons/cross.svg" alt="cross">
+                            </div>
+                        </div>
+                    </div>
+                    <p class="additional-button add-item-program">+Добавить еще</p>
+                </div>
+                <label for="img">Выберите картинку курса</label>
+                <input type="file" name="img_course" id="img" accept="image/*" required>
+                <label for="link_tg">Ссылка на чат курса</label>
+                <input id="link_tg" type="text" name="link_tg" minlength="1" maxlength="100" required>
+                <div class="block-condition_course">
+                    <label for="condition_course">Что клиент получит от курса</label>
+                    <div class="item__block-condition_course">
+                        <div class="item_condition_course">
+                            <div class="input__condition_course">
+                                <input id="condition_course" type="text" name="condition_course" minlength="3"
+                                    maxlength="100" value="{{dataValues.condition_course}}" required>
+                                    <img class="remove__condition_course" src="/assets/icons/cross.svg" alt="cross">
+                            </div>
+                        </div>
+                    </div>
+                    <p class="additional-button add-condition">+Добавить еще</p>
+                </div>
+                <label for="main_result">Главный результат</label>
+                <input id="main_result" type="text" name="main_result" minlength="3" maxlength="800" required>
+            </div>
+            <div class="block__form__admin">
+                <p class="title title__form__admin">Материалы курса</p>
+                <div class="block-materials">
+                    <div class="item__block-materials">
+                        <label for="name_lesson">Название урока 1</label>
+                        <input id="name_lesson" type="text" name="name_lesson" minlength="3" maxlength="70" required>
+                        <label for="videoFile">Выберете видео 1-ой лекции</label>
+                        <input type="file" name="video_lesson" id="video" accept="video/*" required>
+                    </div>
+                </div>
+                <p class="additional-button add-materials">+Добавить урок</p>
+            </div>
+
+            <button class="btn btn__form__admin btn__form__admin_add" type="submit">Добавить курс</button>
+        </form>
+        {{/if}}
+        {{!-- измененеие --}}
+        {{#if isEdit}}
+        {{#if errorAddCourse}}
+        <p class="notification error error_admin">{{errorAddCourse}}</p>
+        {{/if}}
+        <form class="form__admin form__admin_edit" method="post" action="/admin/edit/course?_csrf={{csurf}}"
+            enctype="multipart/form-data">
+            <div class="block__form__admin block__form__admin_edit">
+                <p class="title title__form__admin">Информация по курсу</p>
+                <label for="name">Название курса</label>
+                <input id="name" type="text" name="name" minlength="3" maxlength="50"
+                    value="{{dataCourse.dataValues.name}}" required>
+                <div class="select-school">
+                    <label for="school">Выберите школу</label>
+                    <select name="school" id="school" required>
+                        <option style="background-color: #1f5679;color: #fff;"
+                            value="{{dataCourse.dataValues.School.dataValues.name}}">Cейчас выбрана:
+                            {{dataCourse.dataValues.School.dataValues.name}}</option>
+                        {{#each listNameSchool}}
+                        <option value="{{dataValues.name}}">{{dataValues.name}}</option>
+                        {{/each}}
+                    </select>
+                    <p class="additional-button no-school">Добавить новую школу</p>
+                </div>
+                <label for="description">Описание курса</label>
+                <input id="description" type="text" name="description" minlength="3" maxlength="1000"
+                    value="{{dataCourse.dataValues.description}}" required>
+                <label for="time">Общее время лекций</label>
+                <input id="time" type="text" name="time" minlength="1" maxlength="3"
+                    value="{{dataCourse.dataValues.time}}" required>
+                <label for="count_lesson">Кол-во лекций</label>
+                <input id="count_lesson" type="text" name="count_lesson" minlength="1" maxlength="3"
+                    value="{{dataCourse.dataValues.count_lesson}}" required>
+                <label for="price">Цена курса</label>
+                <input id="price" type="text" name="price" minlength="1" maxlength="5"
+                    value="{{dataCourse.dataValues.price}}" required>
+                <div class="select-category">
+                    <label for="category">Выберите категорию</label>
+                    <select name="category" id="category" required>
+                        <option style="background-color: #1f5679;color: #fff;"
+                            value="{{dataCourse.dataValues.Category.dataValues.name_category}}">Cейчас выбрана:
+                            {{dataCourse.dataValues.Category.dataValues.name_category}}</option>
+                        {{#each masCategory}}
+                        <option value="{{dataValues.name_category}}">{{dataValues.name_category}}</option>
+                        {{/each}}
+                    </select>
+                    <p class="additional-button no-category">Добавить новую категорию</p>
+                </div>
+
+                <div class="block-program_course">
+                    <label for="program_course">Программа курса</label>
+                    <div class="item__block-program_course">
+                        {{#each programCourse}}
+                        <div class="item__program-step">
+                            <div class="input__program-step">
+                                <input id="program_course" type="text" name="program_course" minlength="3"
+                                    maxlength="100" value="{{dataValues.program_step}}" required>
+                                <img class="remove__program-step" src="/assets/icons/cross.svg" alt="cross">
+                            </div>
+
+                        </div>
+                        {{/each}}
+                    </div>
+                    <p class="additional-button add-item-program">+Добавить еще</p>
+                </div>
+                <label for="img">Выберите картинку курса</label>
+                <input type="file" name="img_course" id="img" accept="image/*" required>
+                <label for="link_tg">Ссылка на чат курса</label>
+                <input id="link_tg" type="text" name="link_tg" minlength="1" maxlength="100"
+                    value="{{dataCourse.dataValues.link_tg}}" required>
+                <div class="block-condition_course">
+                    <label for="condition_course">Что клиент получит от курса</label>
+                    <div class="item__block-condition_course">
+                        {{#each specialConditions}}
+                        <div class="item_condition_course">
+                            <div class="input__condition_course">
+                                <input id="condition_course" type="text" name="condition_course" minlength="3"
+                                    maxlength="100" value="{{dataValues.condition_course}}" required>
+                                    <img class="remove__condition_course" src="/assets/icons/cross.svg" alt="cross">
+                            </div>
+                        </div>
+                        {{/each}}
+                    </div>
+                    <p class="additional-button add-condition">+Добавить еще</p>
+                </div>
+                <label for="main_result">Главный результат</label>
+                <input id="main_result" type="text" name="main_result" minlength="3" maxlength="800"
+                    value="{{mainResult.dataValues.result}}" required>
+            </div>
+            <input type="hidden" name="id" value="{{id}}">
+            <button class="btn btn__form__admin btn__form__admin_add" type="submit">Изменить информацию о курсе</button>
+        </form>
+        {{/if}}
+
+        {{#if isReport}}
+        <div class="filters__admin">
+            <p id="additional-flilters" class="additional-flilters__admin">Фильтры</p>
+            <form class="additional-form orders__form " method="post" action="">
+                <select name="school" id="school">
+                    <option value="">По выбранной школе</option>
+                    {{#each listNameSchool}}
+                    <option value="{{dataValues.name}}">{{dataValues.name}}</option>
+                    {{/each}}
+                </select>
+                <select name="category" id="category">
+                    <option value="">По категории</option>
+                    {{#each masCategory}}
+                    <option value="{{dataValues.name_category}}">{{dataValues.name_category}}</option>
+                    {{/each}}
+                </select>
+                <div class="search__filters">
+                    <input type="text" id="searchInput" oninput="showHints(this)" placeholder="Поиск по названию..."
+                        data-filters="{{listNameCourses}}" name="name_course" autocomplete="off">
+                    <div id="hintBox"></div>
+                </div>
+                <select name="date" id="date">
+                    <option value="">По дате</option>
+                    <option value="1">За месяц</option>
+                    <option value="2">За три месяца</option>
+                    <option value="3">За год</option>
+
+                </select>
+                <input type="hidden" name="_csrf" value="{{csurf}}">
+                <button class="btn btn_filters btn_filters_orders" type="submit">Применить фильтр</button>
+            </form>
+        </div>
+        <div class="nofind"></div>
+        <div class="table__admin table-orders">
+            <table>
+                <tr>
+                    <th>id</th>
+                    <th>Название</th>
+                    <th>Школа</th>
+                    <th>Категория</th>
+                    <th>Клиент</th>
+                    <th>Цена</th>
+                    <th>Дата покупки</th>
+                </tr>
+                {{#each masOrders}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td>{{Course.name}}</td>
+                    <td>{{Course.School.name}}</td>
+                    <td>{{Course.Category.name_category}}</td>
+                    <td>{{client.last_name}} {{client.name}}</td>
+                    <td>{{Course.price}}</td>
+                    <td>{{date_sold}}</td>
+                </tr>
+                {{/each}}
+            </table>
+        </div>
+        <div class="table__admin table-summation">
+            <table>
+                <tr>
+                    <th colspan="2">Итого</th>
+                    <th style="display: none;"></th>
+                </tr>
+                <tr>
+                    <th>Проданно</th>
+                    <th>Общая сумма</th>
+                </tr>
+                <tr>
+                    <td>{{masOrders.length}}</td>
+                    <td>{{masPrice}}</td>
+                </tr>
+            </table>
+        </div>
+        <button id="download" class="btn btn btn_auth btn_download-orders">Скачать отчет</button>
+        {{/if}}
+
+    </div>
+
+</main>
+<div class="pop_up_delete">
+    <div class="pop_up">
+        <div class="pop_up_conteiner">
+            <div class="pop_up_body pop_up_body_delete">
+                <div class="close-popup close-popup__delete">
+                    <img src="/assets/icons/cross.svg" alt="close">
+                </div>
+                <form class="form__pop_up form__pop_up_delete" method="post" action="/admin/delete">
+                    <h3 class="title title__content_popup">Вы хотите удалить свой отзыв?</h3>
+                    <div class="footer__pop_up">
+                        <input type="hidden" name="idCourse" value="v">
+                        <input type="hidden" name="_csrf" value="{{csurf}}">
+                        <button class="btn btn__form  btn__form_accept" name="delete_review" value="yes"
+                            type="submit">Да</button>
+                        <button class="btn btn__form btn__form_cancel" name="delete_review" value="no"
+                            type="submit">Нет</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

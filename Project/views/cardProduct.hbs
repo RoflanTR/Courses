@@ -1,0 +1,211 @@
+{{#if isError}}
+<main style="display: flex;">
+    <div class="error-block">
+        <h3>Данный курс не найден</h3>
+        <a href="/catalog" class="link__error">Вернуться назад</a>
+
+    </div>
+</main>
+{{else}}
+<main>
+    <div class="conteiner">
+        {{#if successAddReview}}
+        <p class="notification notification_width notification_width__card successfully">{{successAddReview}}</p>
+        {{/if}}
+        {{#if errorAddReview}}
+        <p class="notification notification_width notification_width__card error">{{errorAddReview}}</p>
+        {{/if}}
+        
+        {{#if course}}
+        <div class="content content__card-product">
+            <div class="card_additional card__card-product">
+                <div class="image__card-product">
+                    <img src="/assets/imgCourses/{{course.dataValues.img}}" alt="course">
+                </div>
+                <div class="description-card description-card_additional description-card__card-product">
+                    <div class="score">
+                        <div class="info__score">
+                            <div class="item__score">
+                                <img src="/assets/icons/play.svg" alt="play">
+                                <p> {{course.dataValues.count_lesson}} лекций</p>
+                            </div>
+                            <div class="item__score">
+                                <img src="/assets/icons/clock.svg" alt="clock">
+                                <p>{{course.dataValues.time}} часов</p>
+                            </div>
+                        </div>
+                        {{#if course.dataValues.average_score}}
+                        <div class="estimation">
+                            <div class="item__score">
+                                <img src="/assets/icons/Star 1.svg" alt="star">
+                                <p>{{course.dataValues.average_score}}</p>
+                            </div>
+                            <div class="reviews">
+                                <p>Отзывов: {{course.dataValues.count_review}}</p>
+                            </div>
+                        </div>
+                        {{/if}}
+                    </div>
+                    <div class="title title__card title__card__card-product">
+                        {{course.dataValues.name}}
+                    </div>
+                    <div class="author">
+                        {{course.dataValues.School.dataValues.name}}
+                    </div>
+                    <div class="short-description__card-product">
+                        {{course.dataValues.description}}
+                    </div>
+
+                </div>
+                <div class="plate">
+                    <div class="title title__plate">
+                        Что вы получите:
+                    </div>
+                    {{#if specialConditions}}
+                    <div class="items__plate">
+                        {{#each specialConditions}}
+                        <p>{{dataValues.condition_course}}</p>
+                        {{/each}}
+                    </div>
+                    {{/if}}
+
+                    {{#if mainResult}}
+                    <hr class="line line__plate">
+                    <div class="general-result">
+                        <div class="title title__plate">
+                            <p>Главный результат:</p>
+                        </div>
+
+                        <p class="items__plate">{{mainResult.dataValues.result}}</p>
+
+                    </div>
+                    {{/if}}
+                </div>
+                {{#if programCourse}}
+                <hr class="line line__out-plate">
+                <div class="plate">
+                    <div class="title title__plate">
+                        Программа курса:
+                    </div>
+                    <ol class="items__plate">
+                        {{#each programCourse}}
+                        <li>{{dataValues.program_step}}</li>
+                        {{/each}}
+                    </ol>
+                </div>
+                {{/if}}
+            </div>
+            <div class="plate plate-buy">
+
+                {{#if isBuy}}
+                <div class="title title__plate title__plate_center">
+                    Приобретен
+                </div>
+                {{else}}
+                <div class="title title__plate title__plate_center">
+                    Приобрести курс
+                </div>
+                <div class="subtitle">{{course.dataValues.price}} ₽</div>
+                <div class="items__plate items__platebuy">
+                    <p><b>Что входит в эту стоимость:</b></p>
+                    <p>Доступ навсегда</p>
+                    <p>{{course.dataValues.count_lesson}} видеоуроков</p>
+                    <p>Куратора который поможет</p>
+                    <p>Гарантия возврата</p>
+                </div>
+                {{/if}}
+                {{#if isAuth}}
+                {{#if isBuy}}
+                {{#if isReview}}
+                <a href="#reviews"><button class="btn btn__plate-buy">Посмотреть отзывы</button></a>
+                {{else}}
+                <button class="btn btn__plate-buy_review btn__plate-buy">Оставить отзыв</button>
+                {{/if}}
+                {{else}}
+                <button class="btn btn__plate-buy btn__plate-buy_buy">Купить</button>
+                {{/if}}
+
+                {{else}}
+                <a href="/login"><button class="btn__plate-buy btn__plate-buy_nologin">Войдите чтобы купить</button></a>
+                {{/if}}
+            </div>
+        </div>
+        {{/if}}
+        {{#if reviewCourse}}
+        <div class="block-reviews">
+            <div class="title title__card title__reviews">
+
+                <p>
+                    <a name="reviews"></a>Отзывы:
+                </p>
+                <p class="reviews">Всего: {{reviewCourse.length}}</p>
+            </div>
+            <hr class="line line__plate">
+            {{#each reviewCourse}}
+            <div class="review">
+                <div class="header-review">
+                    <div class="author-review">
+                        <p>{{client.last_name}} {{client.name}}</p>
+                    </div>
+                    <div class="estimation">
+                        <div class="item__score">
+                            <img src="/assets/icons/Star 1.svg" alt="star">
+                            <p>{{score}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-review">
+                    {{text_review}}
+                </div>
+                <hr class="line line__out-plate line__review">
+            </div>
+            {{/each}}
+        </div>
+        {{/if}}
+    </div>
+    <div class="pop_up_review">
+        <div class="pop_up">
+            <div class="pop_up_conteiner">
+                <div class="pop_up_body pop_up_review">
+                    <div class="close-popup close-popup__review">
+                        <img src="/assets/icons/cross.svg" alt="close">
+                    </div>
+                    <form class="form__pop_up" method="post" action="/card/review">
+                        <textarea name="review" cols="30" rows="10" placeholder="Напишите отзыв" required></textarea>
+                        <div class="footer__pop_up">
+                            <select name="estimation" id="estimation" required>
+                                <option value="">-- Выберите оценку --</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                            <input type="hidden" name="_csrf" value="{{csurf}}">
+                            <button class="btn btn__form" type="submit">Отправить</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="pop_up_sale">
+        <div class="pop_up">
+            <div class="pop_up_conteiner">
+                <div class="pop_up_body pop_up_sale">
+                    <div class="content_popup_sale">
+                        <h3 class="title title__content_popup">Вы уверены что хотите приобрести курс
+                            <b>"{{course.dataValues.name}}"</b>?</h3>
+                        <div class="btn__content_popup_sale">
+                            <button id="{{course.dataValues.id}}" class="btn btn__form  btn__form_accept"
+                                value="{{csurf}}">да</button>
+                            <button class="btn btn__form btn__form_cancel">нет</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{{/if}}

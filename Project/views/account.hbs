@@ -1,0 +1,185 @@
+<main>
+    <div class="conteiner">
+        <div class="banner__account">
+            <img src="/assets/img/Group 48.svg" alt="hello">
+            <p class="title title__banner__account">Добро пожаловать, {{user}}!</p>
+            <a href="/account/editAccount">
+                <div class="settings">
+                    <img src="/assets/icons/settings.svg" alt="settings">
+                </div>
+            </a>
+        </div>
+        {{#if successEditReview}}
+        <p class="notification notification_width successfully">{{successEditReview}}</p>
+        {{/if}}
+        {{#if successfulEditDataAccount}}
+        <p class="notification notification_width successfully">{{successfulEditDataAccount}}</p>
+        {{/if}}
+        {{#if successDeleteReview}}
+        <p class="notification notification_width successfully">{{successDeleteReview}}</p>
+        {{/if}}
+        {{#if errorDeleteReview}}
+        <p class="notification notification_width error">{{errorDeleteReview}}</p>
+        {{/if}}
+        {{#if errorEditReview}}
+        <p class="notification notification_width error">{{errorEditReview}}</p>
+        {{/if}}
+        <h3 class="title notification_width title__account">Приобретенные курсы</h3>
+        {{#if availabilityBuyCourses}}
+        <div class="list-purchased-courses">
+            <div class="slider">
+                {{#each buyCourses}}
+                <div class="slide">
+                    <div class="card card__slider">
+                        <a href="/viewCourse/{{Course.id}}">
+                            <div class="image__card">
+                                <img src="/assets/imgCourses/{{Course.img}}" alt="course">
+                            </div>
+                            <div class="description-card description-card__slider">
+                                <div class="score">
+                                    <div class="info__score">
+                                        <div class="item__score">
+                                            <img src="/assets/icons/play.svg" alt="play">
+                                            <p> {{Course.count_lesson}} лекций</p>
+                                        </div>
+                                        <div class="item__score">
+                                            <img src="/assets/icons/clock.svg" alt="clock">
+                                            <p>{{Course.time}} часов</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="title title__card_slider">
+                                    {{Course.name}}
+                                </div>
+                                <div class="author">
+                                    {{Course.School.name}}
+                                </div>
+                                <div class="short-description">
+                                    {{Course.description}}
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        {{else}}
+        <div class="list-purchased-courses_none">
+            <p>У вас пока нет приобретенных курсов</p>
+        </div>
+        {{/if}}
+
+        <h3 class="title title__account">Ваши отзывы</h3>
+        {{#if availabilityUserReviews}}
+        <div class="list-reviews">
+            {{#each userReviews}}
+            <div class="review__list-review">
+                <div class="card card__list-reviews">
+                    <a href="card/{{Course.id}}#reviews">
+                        <div class="image__card">
+                            <img src="/assets/imgCourses/{{Course.img}}" alt="course">
+                        </div>
+                        <div class="description-card ">
+                            <div class="score">
+                                <div class="info__score">
+                                    <div class="item__score">
+                                        <img src="/assets/icons/play.svg" alt="play">
+                                        <p> {{Course.count_lesson}} лекций</p>
+                                    </div>
+                                    <div class="item__score">
+                                        <img src="/assets/icons/clock.svg" alt="clock">
+                                        <p>{{Course.time}} часов</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="title title__card_slider">
+                                {{Course.name}}
+                            </div>
+                            <div class="author">
+                                {{Course.School.name}}
+                            </div>
+                            <div class="short-description">
+                                {{Course.description}}
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="description-review">
+                    <div class="text-review"><span class="title title__text-review">Дата написания:</span>
+                        <p>{{date_create}}</p>
+                    </div>
+                    <div class="text-review"><span class="title title__text-review">Оценка:</span> <img
+                            src="/assets/icons/Star 1.svg" alt="star">{{score}}</div>
+                    <div class="text-review text-review__list-review"><span class="title title__text-review">Текст
+                            отзыва:</span> <br>
+                        <p id="text-review">{{text_review}}</p>
+                    </div>
+                    <div class="edit-review">
+                        <button id="{{id}}" class="btn_edit-review btn_edit-review_edit">Изменить</button>
+                        <button id="{{id}}" class="btn_edit-review btn_edit-review_delete">Удалить</button>
+                    </div>
+                </div>
+
+            </div>
+            <hr class="line line__out-plate line__review_account">
+            {{/each}}
+        </div>
+        {{else}}
+        <div class="list-purchased-courses_none list-purchased-courses_none_review">
+            <p>Вы пока не оставляли отзывы</p>
+        </div>
+        {{/if}}
+    </div>
+</main>
+<div class="pop_up_review">
+    <div class="pop_up">
+        <div class="pop_up_conteiner">
+            <div class="pop_up_body pop_up_body_review">
+                <div class="close-popup close-popup__review">
+                    <img src="/assets/icons/cross.svg" alt="close">
+                </div>
+                <form class="form__pop_up form__pop_up_edit-review" action="/account/edit" method="post">
+                    <textarea id="review" name="review" cols="30" rows="10" placeholder="Напишите отзыв"
+                        required></textarea>
+                    <div class="footer__pop_up">
+                        <select name="estimation" id="estimation" required>
+                            <option value="">-- Выберите оценку --</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                        <input type="hidden" name="_csrf" value="{{csurf}}">
+                        <button id="edit_btn" class="btn btn__form" type="submit" name="edit">Отправить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="pop_up_delete">
+    <div class="pop_up">
+        <div class="pop_up_conteiner">
+            <div class="pop_up_body pop_up_body_delete">
+                <div class="close-popup close-popup__delete">
+                    <img src="/assets/icons/cross.svg" alt="close">
+                </div>
+                <form class="form__pop_up form__pop_up_delete" method="post" action="/account/delete">
+                    <h3 class="title title__content_popup">Вы хотите удалить свой отзыв?</h3>
+                    <div class="footer__pop_up">
+                        <input type="hidden" name="idcourse" value="v">
+                        <input type="hidden" name="_csrf" value="{{csurf}}">
+                        <button class="btn btn__form  btn__form_accept" name="delete_review" value="yes"
+                            type="submit">Да</button>
+                        <button class="btn btn__form btn__form_cancel" name="delete_review" value="no"
+                            type="submit">Нет</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

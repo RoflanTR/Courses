@@ -1,0 +1,165 @@
+{{#if isError}}
+<main style="display: flex;">
+    <div class="error-block">
+        <h3>Такой категории не найдено</h3>
+        <a href="/catalog" class="link__error">Вернуться назад</a>
+
+    </div>
+</main>
+{{else}}
+<main>
+    <div class="conteiner">
+        <div class="menu-nav">
+            <h3 class="title title__menu title__menu_small">Все курсы</h3>
+        </div>
+        <p id="additional-flilters">Фильтры</p>
+        <div class="filters-block">
+            <form class="additional-form" method="post" action="">
+                <select name="school" id="pet-select">
+                    <option value="">По выбранной школе</option>
+                    {{#each listNameCourses}}
+                    <option value="{{dataValues.name}}">{{dataValues.name}}</option>
+                    {{/each}}
+                </select>
+                <select name="category" id="category">
+                    <option value="all">По категории</option>
+                    {{#each masCategory}}
+                        <option value="{{dataValues.name_category}}">{{dataValues.name_category}}</option>
+                    {{/each}}
+                   
+                </select>
+                <select name="score" id="pet-select">
+                    <option value="">По оценке</option>
+                    <option value="1">от 1 балла</option>
+                    <option value="2">от 2 баллов</option>
+                    <option value="3">от 3 баллов</option>
+                    <option value="4">от 4 баллов</option>
+                    <option value="5">от 5 баллов</option>
+                </select>
+                <label>По цене:</label>
+                <div class="slider-block">
+                    <div class="slider-price">
+                        <div class="progress"></div>
+                    </div>
+                    <div class="range-input">
+                        <input type="range" class="range-min" min="0" max="20000" value="2500" step="100">
+                        <input type="range" class="range-max" min="0" max="20000" value="15000" step="100">
+                    </div>
+                    <div class="price-input">
+                        <div class="field">
+                            <input type="number" name="min_price" class="input-min" value="-">
+                        </div>
+                        <div class="separator">-</div>
+                        <div class="field">
+                            <input type="number" name="max_price" class="input-max" value="-">
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" name="_csrf" value="{{csurf}}">
+                <button class="btn btn_auth btn_filters" type="submit">Применить фильтр</button>
+            </form>
+        </div>
+        {{#if masAllCourses.length}}
+        <div class="nofind"></div>
+        <div class="course-list">
+            {{#each masAllCourses}}
+            <a href="/card/{{dataValues.id}}" target="_blank">
+                <div class="card card__catalog">
+                    <div class="image__card">
+                        <img src="/assets/imgCourses/{{dataValues.img}}" alt="course">
+                    </div>
+                    <div class="description-card ">
+                        <div class="score">
+                            <div class="info__score">
+                                <div class="item__score">
+                                    <img src="/assets/icons/play.svg" alt="play">
+                                    <p> {{dataValues.count_lesson}} лекций</p>
+                                </div>
+                                <div class="item__score">
+                                    <img src="/assets/icons/clock.svg" alt="clock">
+                                    <p>{{dataValues.time}} часов</p>
+                                </div>
+                            </div>
+                            {{#if dataValues.average_score}}
+                            <div class="estimation">
+                                <div class="item__score">
+                                    <img src="/assets/icons/Star 1.svg" alt="star">
+                                    <p>{{dataValues.average_score}}</p>
+                                </div>
+                                <div class="reviews">
+                                    <p>Отзывов: {{dataValues.count_review}}</p>
+                                </div>
+                            </div>
+                            {{/if}}
+                        </div>
+                        <div class="title title__card_slider">
+                            {{dataValues.name}}
+                        </div>
+                        <div class="author">
+                            {{dataValues.School.dataValues.name}}
+                        </div>
+                        <div class="short-description">
+                            {{dataValues.description}}
+                        </div>
+                        <div class="price">
+                            <p>{{dataValues.price}} ₽</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {{/each}}
+        </div>
+        {{/if}}
+
+        {{#if masCoursesById.length}}
+        <div class="course-list">
+            {{#each masCoursesById}}
+            <a href="/card/{{dataValues.id}}">
+                <div class="card card__catalog">
+                    <div class="image__card">
+                        <img src="/assets/img/{{dataValues.img}}" alt="course">
+                    </div>
+                    <div class="description-card ">
+                        <div class="score">
+                            <div class="info__score">
+                                <div class="item__score">
+                                    <img src="/assets/icons/play.svg" alt="play">
+                                    <p> {{dataValues.count_lesson}} лекций</p>
+                                </div>
+                                <div class="item__score">
+                                    <img src="/assets/icons/clock.svg" alt="clock">
+                                    <p>{{dataValues.time}} часов</p>
+                                </div>
+                            </div>
+                            <div class="estimation">
+                                <div class="item__score">
+                                    <img src="/assets/icons/Star 1.svg" alt="star">
+                                    <p>{{dataValues.average_score}}</p>
+                                </div>
+                                <div class="reviews">
+                                    <p>Отзывов: {{dataValues.count_review}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="title title__card_slider">
+                            {{dataValues.name}}
+                        </div>
+                        <div class="author">
+                            {{dataValues.school}}
+                        </div>
+                        <div class="short-description">
+                            {{dataValues.description}}
+                        </div>
+                        <div class="price">
+                            <p>{{dataValues.price}} ₽</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {{/each}}
+        </div>
+        {{/if}}
+    </div>
+</main>
+
+{{/if}}
